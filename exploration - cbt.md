@@ -15,9 +15,3 @@ L'obiettivo è ottenere la policy ottimale, la policy che ritorna il braccio che
 Abbiamo un'expectation perché non conosciamo il mondo.
 
 Ad ogni time step aggiorno la policy in modo che diventi ottimale.
-
-\begin{tikzpicture}
-\draw[->] (-3,0) -- (-2,0) arc[radius=0.5cm,start angle=-180,end angle=0] (-1,0) -- (1,0) arc[radius=0.5cm,start angle=180,end angle=0] (2,0) -- (3,0);
-\filldraw (-1.5,0) circle[radius=1mm];
-\filldraw (1.5,0) circle[radius=1mm];
-\end{tikzpicture}
