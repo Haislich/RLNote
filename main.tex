@@ -7,7 +7,12 @@
 \usepackage{algorithm}
 \usepackage{algpseudocode}
 \usepackage{graphicx}
-% \usepackage[a4paper, margin=1in]{geometry}
+\usepackage{fancyhdr} % for custom header and footer
+\pagestyle{fancy} % enable fancy page style
+\setlength{\headheight}{22.43335pt}  % Set the minimum required header height
+\addtolength{\topmargin}{-10.43335pt}  % Adjust the top margin to compensate
+\usepackage[a4paper, margin=2.5cm]{geometry}
+\linespread{1.5}
 \graphicspath{ {./images/} }
 \title{Reinforcement Learning Notes}
 \author{Jose Del Valle}
@@ -81,5 +86,6 @@
 
 % Include chapters
 \include{chapters/Exploration - Regret and Multi-Armed bandits}
+\include{chapters/Exploration - Contextual and Bayesian bandits, Thompson sampling}
 \end{document}
 
