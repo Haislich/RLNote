@@ -1,0 +1,84 @@
+\documentclass[oneside]{book} % or report or article
+
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{tcolorbox}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{graphicx}
+\graphicspath{ {./images/} }
+\title{Reinforcement Learning Notes}
+\author{Jose Del Valle}
+\date{\today}
+
+% Tip/Explanation box style
+\newtcolorbox{tipbox}[1][]{
+    colback=green!5!white,     % Lighter background for the box
+    colbacktitle=green!40!white, % Darker background for the title area
+    colframe=green!75!black,   % Border color
+    fonttitle=\bfseries,       % Bold title
+    coltitle=black,            % Darker title text
+    coltext=black,             % Darker text
+    boxrule=0.5mm, 
+    arc=4mm, 
+    width=\textwidth, 
+    before=\par\medskip\noindent,
+    after=\par\medskip, 
+    left=5mm, 
+    right=5mm, 
+    top=5mm, 
+    bottom=5mm,
+    title=#1
+}
+
+% Warning box style
+\newtcolorbox{warningbox}[1][]{
+    colback=yellow!10!white,     % Lighter background for the box
+    colbacktitle=orange!50!white, % Darker background for the title area
+    colframe=orange!75!black,    % Border color
+    fonttitle=\bfseries,         % Bold title
+    coltitle=black,              % Darker title text
+    coltext=black,               % Darker text
+    boxrule=0.5mm, 
+    arc=4mm, 
+    width=\textwidth, 
+    before=\par\medskip\noindent,
+    after=\par\medskip, 
+    left=5mm, 
+    right=5mm, 
+    top=5mm, 
+    bottom=5mm,
+    title=#1
+}
+% Warning box style
+\newtcolorbox{errorbox}[1][]{
+    colback=red!10!white,     % Lighter background for the box
+    colbacktitle=red!50!white, % Darker background for the title area
+    colframe=red!75!black,    % Border color
+    fonttitle=\bfseries,         % Bold title
+    coltitle=black,              % Darker title text
+    coltext=black,               % Darker text
+    boxrule=0.5mm, 
+    arc=4mm, 
+    width=\textwidth, 
+    before=\par\medskip\noindent,
+    after=\par\medskip, 
+    left=5mm, 
+    right=5mm, 
+    top=5mm, 
+    bottom=5mm,
+    title=#1
+}
+
+
+
+\begin{document}
+
+\maketitle
+\tableofcontents
+
+% Include chapters
+\include{chapters/Exploration - Regret and Multi-Armed bandits}
+\end{document}
+
