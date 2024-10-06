@@ -73,8 +73,10 @@ Minimizing regret means making decisions that come as close as possible to the r
 
 The idea behind the greedy algorithm is straightforward: it focuses entirely on exploitation. The algorithm works by always selecting the arm that has given the highest reward based on past experiences, without attempting to gather more information (i.e., without exploring).
 
-1. **Initial Phase**: In the very beginning, the agent may try each arm once to get an initial sense of their rewards.
-2. **Exploit the Best**: After this, the agent commits to always pulling the arm that gave the highest observed reward during the initial phase, assuming that it is the best arm.
+\begin{enumerate}
+    \item Initial Phase: In the very beginning, the agent may try each arm once to get an initial sense of their rewards.
+    \item Exploit the Best: After this, the agent commits to always pulling the arm that gave the highest observed reward during the initial phase, assuming that it is the best arm.
+\end{enumerate}
 
 This approach is called "greedy" because it chooses the arm that seems best based on the current information, without considering the possibility that there might be better arms that haven’t been sufficiently explored.
 
@@ -86,11 +88,14 @@ This approach is called "greedy" because it chooses the arm that seems best base
 
 To optimize the decision-making process and avoid suboptimal outcomes from using just one sample, we can improve the greedy algorithm by:
 
-1. **Try each arm multiple times**: By pulling each arm multiple times, we gather more samples of the rewards for each arm. This allows us to better estimate the true expected reward of each arm, reducing the chance that one lucky sample from a suboptimal arm misleads us.
+\begin{enumerate}
+    \item Try each arm multiple times: By pulling each arm multiple times, we gather more samples of the rewards for each arm. This allows us to better estimate the true expected reward of each arm, reducing the chance that one lucky sample from a suboptimal arm misleads us.
 
-2. **Compute the empirical mean of each arm**: The empirical mean is the average reward of the arm based on the samples we've gathered. The more times we pull an arm, the more accurate this estimate becomes, converging toward the true mean reward of that arm as the number of samples increases.
+    \item Compute the empirical mean of each arm: The empirical mean is the average reward of the arm based on the samples we've gathered. The more times we pull an arm, the more accurate this estimate becomes, converging toward the true mean reward of that arm as the number of samples increases.
 
-3. **Commit to the arm with the highest empirical mean**: After gathering sufficient samples and calculating the empirical means, we can commit to the arm that appears to offer the highest average reward. This balances exploration (trying arms multiple times) with exploitation (choosing the arm that seems best).
+    \item Commit to the arm with the highest empirical mean: After gathering sufficient samples and calculating the empirical means, we can commit to the arm that appears to offer the highest average reward. This balances exploration (trying arms multiple times) with exploitation (choosing the arm that seems best).
+
+\end{enumerate}
 
 \begin{algorithm}
     \caption{Greedy algorithm with empirical mean}
@@ -128,6 +133,8 @@ The **Hoeffding Inequality** is a statistical tool that provides a bound on how 
 
 The empirical mean $\hat{\mu_i}$ of the rewards for an arm is an estimate of the true mean $\mu_i$ of its reward distribution. However, due to the randomness in the rewards, $\hat{\mu_i}$ might not exactly match $\mu_i$. The **Hoeffding Inequality** gives us a confidence interval around the empirical mean, providing a bound on the probability that the difference between the empirical mean $\hat{\mu_i}$ and the true mean $\mu_i$ is within a certain range, depending on the number of samples $N$ and a chosen confidence level $1 - \delta$.
 
+\includegraphics[width=11cm]{Exploration - Regret and Multi-Armed bandits/hoeffding_bounds.png}
+
 During the exploration phase, you are trying out each arm to gather information about their rewards. Since you don't know which arm is the best yet, you will inevitably pull suboptimal arms. Out of the $K$ arms, only one is the best (with the highest reward), and the remaining $(K-1)$ arms are suboptimal.
 
 Let’s assume rewards are either 0 or 1. The worst-case exploration regret is:
@@ -137,9 +144,10 @@ $$
 $$
 
 In the worst case, we make the following assumptions:
-
-- The optimal arm has a mean reward of 1.
-- The suboptimal arms have a mean reward of 0.
+\begin{itemize}
+    \item The optimal arm has a mean reward of 1.
+    \item The suboptimal arms have a mean reward of 0.
+\end{itemize}
 
 This simplifies the regret to:
 
@@ -197,7 +205,7 @@ $$
 Since $\hat{\mu_{I^*}} - \hat{\mu_{\hat{I}}} \leq 0$ (the best empirical estimate is less than or equal to the true best arm), we can simplify:
 
 $$
-    \hat{\mu_{I^*}} - \hat{\mu_{\hat{I}}} + 2\sqrt{\frac{\ln(\frac{K}{\delta})}{N}} \leq 2\sqrt{\frac{\ln(\frac{K}{\delta})}{N}}
+    \hat{\mu}_{I^*} - \hat{\mu}_{\hat{I}} + 2\sqrt{\frac{\ln(\frac{K}{\delta})}{N}} \leq 2\sqrt{\frac{\ln(\frac{K}{\delta})}{N}}
 $$
 
 The total regret can now be written as:
@@ -268,9 +276,11 @@ The intuition behind choosing the highest UCB can be explained as follows:
 
 There are two possible cases:
 
-- **Large confidence interval**: A large confidence interval indicates that the algorithm is uncertain about the true reward of that arm. This occurs when an arm hasn’t been pulled often, so the estimate of its mean reward $\hat{\mu}_t(i)$ might not be accurate. If an arm has been pulled only a few times, $N_t(i)$ is small, and the exploration term becomes large, reflecting greater uncertainty about the true reward of the arm. A large confidence interval suggests that the arm might have a high reward, but more data is needed to confirm or reject this. If the algorithm is uncertain about the reward of an arm (i.e., the confidence interval is large), it will lean towards exploring that arm to gather more information, in case it turns out to be better than expected.
+\begin{itemize}
+    \item A large confidence interval indicates that the algorithm is uncertain about the true reward of that arm. This occurs when an arm hasn’t been pulled often, so the estimate of its mean reward $\hat{\mu}_t(i)$ might not be accurate. If an arm has been pulled only a few times, $N_t(i)$ is small, and the exploration term becomes large, reflecting greater uncertainty about the true reward of the arm. A large confidence interval suggests that the arm might have a high reward, but more data is needed to confirm or reject this. If the algorithm is uncertain about the reward of an arm (i.e., the confidence interval is large), it will lean towards exploring that arm to gather more information, in case it turns out to be better than expected. \includegraphics[width =10cm]{Exploration - Regret and Multi-Armed bandits/large_confidence_bound.png}
+    \item A small confidence interval indicates that the algorithm has a high degree of confidence in the estimated mean reward for that arm. This happens when an arm has been pulled many times, so the estimate for its reward, $\hat{\mu}_t(i)$, is likely close to the true reward $\mu_t(i)$. As the arm is pulled more frequently, $N_t(i)$ increases and shrinks the interval. If an arm has a small confidence interval, the exploration bonus for that arm is small, meaning the algorithm will exploit this arm more often, choosing it over arms with less accurate estimates. In this case, we prioritize exploitation because we have enough data about this arm to trust its empirical mean. The algorithm assumes that further exploration won’t add much new information. \includegraphics[width =10cm]{Exploration - Regret and Multi-Armed bandits/small_confidence_bound.png}
+\end{itemize}
 
-- **Small confidence interval**: A small confidence interval indicates that the algorithm has a high degree of confidence in the estimated mean reward for that arm. This happens when an arm has been pulled many times, so the estimate for its reward, $\hat{\mu}_t(i)$, is likely close to the true reward $\mu_t(i)$. As the arm is pulled more frequently, $N_t(i)$ increases and shrinks the interval. If an arm has a small confidence interval, the exploration bonus for that arm is small, meaning the algorithm will exploit this arm more often, choosing it over arms with less accurate estimates. In this case, we prioritize exploitation because we have enough data about this arm to trust its empirical mean. The algorithm assumes that further exploration won’t add much new information.
 
 \subsubsection{UCB regret}
 
